@@ -2,6 +2,7 @@ function SoupLetter(incoming_words){
 
     var self = this;
     self.words = incoming_words.split(','); // Holds the incoming words
+    self.found_words = new Array(); // Holds the found words
     self.local_matrix = new Array(); // Holds the board of the soup letter
     self.positions = new Array(); // Holds the positions of the words 
     self.getsin = [
@@ -95,7 +96,7 @@ function SoupLetter(incoming_words){
         for(i=0; i < word.length; i++){
             self.local_matrix[p_x + (i * dir_x)][p_y + (i * dir_y)] = word[i];
         }
-        self.positions[word] = ({'i': p_x, 'j': p_y, 'x': dir_x, 'y': dir_y})
+        self.positions[word] = ({'i': p_x, 'j': p_y, 'x': dir_x, 'y': dir_y, 'found': false})
     }
 
     self.try_put_word = function(cur_word, inter_word, inter_cur, position){
@@ -127,6 +128,7 @@ function SoupLetter(incoming_words){
     }
 
     self.fill_empties = function(){
+        // Fills the board with letters contained in the words
         for (var i = 0; i < self.local_matrix.length; i++){
             for (var j = 0; j < self.local_matrix.length; j++){
                 if (self.local_matrix[i][j] === '-') {
@@ -217,14 +219,63 @@ function SoupLetter(incoming_words){
         self.put_words();
     };
 
+    self.wordattempt = function(x_ini, y_ini, x_end, y_end){
+        // Receives an initial position and a final one to determine if there is
+        // a selected word that has to be found in the board
+        var found = false;
+        var x_diff = Math.abs(x_ini - x_end);
+        var y_diff = Math.abs(y_ini - y_end);
+        if (x_diff != y_diff && x_diff > 1 && y_diff > 1) {
+            return found;
+        }
+        var norm = Math.max(x_diff, y_diff);
+        var word = '';
+        var dx = (x_end - x_ini) / norm;
+        var dy = (y_end - y_ini) / norm;
+        for(var i=0; i < norm; i++){
+            word += self.local_matrix[x_ini + i * dx][y_ini + i * dy];
+        }
+        var reversed = word.split("").reverse().join("");
+        if (self.words.indexOf(word) != -1 && self.found_words.indexOf(word) === -1) {
+            found = true;
+            self.positions[word].found = true;
+            self.found_words.push(word);
+        }
+        if (self.words.indexOf(reversed) != -1 && self.found_words.indexOf(reversed) === -1) {
+            found = true;
+            self.positions[reversed].found = true;
+            self.found_words.push(reversed);
+        }
+        return found;
+    }
+
     self.show_plain_matrix = function(){
-        // Shows a plain matrix
+        // Shows the board in plain text
         joined = ""
         for (j = 0; j < self.local_matrix.length; j++){
             joined += self.local_matrix[j].join("") + "\n";
         }
         return joined;
 
+    }
+
+    self.show_table_matrix = function(){
+        // Shows the board in an html table
+        var joined = "";
+        for (j = 0; j < self.local_matrix.length; j++){
+            joined += "<tr><td>" + self.local_matrix[j].join("</td><td>") + "</td></tr>\n";
+        }
+        return joined;
+
+    }
+
+    self.won = function(){
+        // Returns true if you have found all the words
+        var result = true;
+        for(word in self.positions){
+            result = result && self.positions[word].found;
+        }
+        return result;
     }
     self.calculatepuzzle();
 }
