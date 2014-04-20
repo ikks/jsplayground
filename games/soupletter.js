@@ -1,3 +1,11 @@
+/*
+ Author: Igor Támara <igor@tamaraptino.org>
+ Given to the public domain, no warranties, if you want, do use this
+ engine in your sites and if you want, let me know of improvements
+ to it.
+ This is the logic for letter soup
+*/
+
 function SoupLetter(incoming_words){
 
     var self = this;
