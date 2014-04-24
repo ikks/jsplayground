@@ -62,20 +62,21 @@ function CowsBulls(n_dig) {
 
     self.guess = function(the_guess){
         // Returns an array telling in the first position the number
-        // of cows and as a second position the number of cows
+        // of bulls and as a second position the number of cows
         if (the_guess.length !== self.to_guess.length){
             self.error = 'Coloca la misma cantidad';
             return [0, 0];
         }
-        self.attempts.push(the_guess);
+        self.error = '';
         var bulls = self.get_bulls(the_guess);
         if ( bulls.length === self.to_guess.length){
-            self.history.push(the_guess);
+            self.history.push([the_guess, bulls.length, 0]);
             return [bulls.length, 0];
         }
         var cows = self.get_cows(the_guess, bulls);
         self.history.push(the_guess);
         self.error = '';
+        self.attempts.push([the_guess, bulls.length, cows]);
         return [bulls.length, cows];
     }
 
