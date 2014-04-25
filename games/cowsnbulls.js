@@ -6,6 +6,12 @@
  This is the logic for playing against the computer cows and bulls
 */
 
+function Attempt(guess, cows, bulls) {
+    this.guess = guess;
+    this.cows = cows;
+    this.bulls = bulls;
+}
+
 function CowsBulls(n_dig) {
 
     var self = this;
@@ -68,12 +74,12 @@ function CowsBulls(n_dig) {
         self.error = '';
         var bulls = self.get_bulls(the_guess);
         if ( bulls.length === self.to_guess.length){
-            self.history.push([the_guess, bulls.length, 0]);
+            self.history.push(new Attempt(the_guess, bulls.length, 0));
             return [bulls.length, 0];
         }
         var cows = self.get_cows(the_guess, bulls);
         self.error = '';
-        self.history.push([the_guess, bulls.length, cows]);
+        self.history.push(new Attempt(the_guess, bulls.length, cows));
         return [bulls.length, cows];
     }
 
@@ -83,7 +89,7 @@ function CowsBulls(n_dig) {
             return false;
         }
         if (the_guess === undefined) {
-            the_guess = self.history[self.history.length - 1][0];
+            the_guess = self.history[self.history.length - 1].guess;
         }
         for (var i = 0; i < the_guess.length; i++){
             if (the_guess[i] != self.to_guess[i]){
@@ -92,5 +98,5 @@ function CowsBulls(n_dig) {
         }
         return true;
     }
-    self.new_game();
+    self.new_game(n_dig);
 }
