@@ -28,7 +28,7 @@ var ViewModel = function(nthing) {
 			self.won(logic.won());
 			self.bulls(result[0]);
 			self.cows(result[1]);
-			self.attempts(logic.attempts.length);
+			self.attempts(logic.history.length);
 		}
 	});
 	

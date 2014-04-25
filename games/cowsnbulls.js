@@ -11,7 +11,6 @@ function CowsBulls(n_dig) {
     var self = this;
     self.to_guess = "";
     self.tries = 0;
-    self.attempts = new Array();
     self.quantity = n_dig;
 
     self.new_game = function(){
@@ -23,7 +22,6 @@ function CowsBulls(n_dig) {
         self.to_guess = aux_guess.join('');
         self.error = '';
         self.history = new Array();
-        console.log(self.to_guess);
     }
 
     self.get_bulls = function(the_guess){
@@ -74,9 +72,8 @@ function CowsBulls(n_dig) {
             return [bulls.length, 0];
         }
         var cows = self.get_cows(the_guess, bulls);
-        self.history.push(the_guess);
         self.error = '';
-        self.attempts.push([the_guess, bulls.length, cows]);
+        self.history.push([the_guess, bulls.length, cows]);
         return [bulls.length, cows];
     }
 
@@ -86,7 +83,7 @@ function CowsBulls(n_dig) {
             return false;
         }
         if (the_guess === undefined) {
-            the_guess = self.history[self.history.length - 1];
+            the_guess = self.history[self.history.length - 1][0];
         }
         for (var i = 0; i < the_guess.length; i++){
             if (the_guess[i] != self.to_guess[i]){
