@@ -1,0 +1,47 @@
+div.truck {
+    width 800px;
+    height 400px;
+    display: inline-block;
+}
+
+div.tire {
+    width:50px;
+    background-color: black;
+    height:50px;
+    border-radius:50%;
+    position: relative;
+    margin: 10px;
+    display: inline-block;
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+
+div.axis {
+    position: absolute;
+    width:30%;
+    height:30%;
+    border-radius:50%;
+    background-color: white;
+    top:35%;
+    left:35%;
+}
+
+div.mark {
+    position: absolute;
+    border-radius:50%;
+    width: 4px;
+    height: 4px;
+    top: 6px;
+    left: 23px;
+    background: white;
+}
+
+div.delta {
+    top: 23px;
+    left: 40px;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
